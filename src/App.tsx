@@ -1,26 +1,24 @@
-import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import { State } from './logic/types';
+import { MainPage } from './components/MainPage';
+import { defaultGameStore, GameContext } from './components/GameStore';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <GameContext.Provider value={defaultGameStore}>
+      <MainPage />
+      <button onClick={() => {
+        setTimeout(() => {
+          defaultGameStore.start();
+          console.log("Display", defaultGameStore.display, State[defaultGameStore.game.fsm.state]);
+          setTimeout(() => {
+            defaultGameStore.hide();
+            console.log("Display", defaultGameStore.display, State[defaultGameStore.game.fsm.state]);
+          }, 3000);
+        }, 1000);
+      }}>Start</button>
+    </GameContext.Provider>
+  )
 }
 
 export default App;
